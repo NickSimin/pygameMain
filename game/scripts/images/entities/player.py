@@ -38,9 +38,19 @@ class Player(AnimateEntity):
         self.position = pos
         return True
 
-    def move(self):
+    def physics(self):
+        pos = self.position
+        self.position = (pos[0], pos[1] + self.tilemap.tilesize // 2)
+        for cord, tile in self.tilemap.tilemap.items():
+            if self.is_collide(tile):
+                self.position = pos
+                return False
+        self.position = pos
+        return True
+
+    def move_horisontal(self):
         if self.can_move():
-            self.tilemap.move((self.speed[0], self.speed[1]))
+            self.tilemap.move((self.speed[0], 0))
 
     def blit(self):
         if self.speed[0] != 0 and self.can_move():
@@ -62,9 +72,14 @@ class Player(AnimateEntity):
             self.screen.blit(self.cadres_run[self.now_cadre_run // self.slow_run % len(self.cadres_run)], self.position)
             self.now_cadre_run += 1
             self.now_cadre_idle = 0
-            self.move()
+            self.move_horisontal()
         else:
             self.screen.blit(self.cadres_idle[self.now_cadre_idle // self.slow_idle % len(self.cadres_idle)],
                              self.position)
             self.now_cadre_idle += 1
             self.now_cadre_run = 0
+            
+        if self.speed[1] != 0:
+            self.tilemap.move((0, self.SPEED * 2))
+        if self.physics():
+            self.speed[1] = 10

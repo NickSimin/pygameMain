@@ -5,6 +5,7 @@ from game.scripts.images.image import Background
 from game.scripts.images.button import Button
 from game.scripts.images.entities.player import Player
 from game.scripts.tilemap.tilemap import TileMap
+
 pg.init()
 
 
@@ -16,8 +17,7 @@ class Game:
         self.is_run = True
         self.is_run_main_menu = True
         self.background = Background("background", self.screen, size_window)
-        self.main_menu_button = Button((size_window[0]//2, size_window[1]//2), self.screen, "Play")
-
+        self.main_menu_button = Button((size_window[0] // 2, size_window[1] // 2), self.screen, "Play")
 
         self.tilemap = TileMap("map1", 32, size_window, self.screen, self.fps)
         self.player = self.tilemap.player
