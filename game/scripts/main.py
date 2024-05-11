@@ -4,6 +4,7 @@ from game.scripts.images.image import Image
 from game.scripts.images.image import Background
 from game.scripts.images.button import Button
 from game.scripts.images.entities.player import Player
+from game.scripts.tilemap.tilemap import TileMap
 pg.init()
 
 
@@ -18,6 +19,8 @@ class Game:
         self.main_menu_button = Button((size_window[0]//2, size_window[1]//2), self.screen, "Play")
 
         self.player = Player((size_window[0]//2, size_window[1]//2), self.screen, fps)
+
+        self.tilemap = TileMap("map1", 32, size_window, self.screen)
         pg.display.set_caption(caption)
 
     def menu(self):
@@ -52,6 +55,7 @@ class Game:
             self.clock.tick(self.fps)
 
             self.background.blit()
+            self.tilemap.blit()
             self.player.blit()
             pg.display.flip()
 
