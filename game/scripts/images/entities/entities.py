@@ -14,6 +14,7 @@ class AnimateEntity(Entity):
         self.FPS = fps
         self.slow = fps//len(self.cadres)
         self.now_cadre = 0
+        self.image = self.cadres[0]
 
     def blit(self):
         self.screen.blit(self.cadres[self.now_cadre // self.slow], self.position)

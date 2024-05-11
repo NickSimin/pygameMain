@@ -18,9 +18,9 @@ class Game:
         self.background = Background("background", self.screen, size_window)
         self.main_menu_button = Button((size_window[0]//2, size_window[1]//2), self.screen, "Play")
 
-        self.player = Player((size_window[0]//2, size_window[1]//2), self.screen, fps)
 
-        self.tilemap = TileMap("map1", 32, size_window, self.screen)
+        self.tilemap = TileMap("map1", 32, size_window, self.screen, self.fps)
+        self.player = self.tilemap.player
         pg.display.set_caption(caption)
 
     def menu(self):

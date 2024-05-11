@@ -23,6 +23,14 @@ class Image:
                 return True
         return False
 
+    def is_collide(self, other):
+        if self.position[0] < other.position[0] + other.image.get_width():
+            if self.position[0] + self.image.get_width() > other.position[0]:
+                if self.position[1] < other.position[1] + other.image.get_height():
+                    if self.position[1] + self.image.get_height() > other.position[1]:
+                        return True
+        return False
+
 
 class Background(Image):
     def __init__(self, path, screen, size):
