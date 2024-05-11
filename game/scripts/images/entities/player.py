@@ -24,13 +24,16 @@ class Player(AnimateEntity):
 
         self.speed = [0, 0]
         self.SPEED = 3
-        self.flipped = False
+        self.FPS = fps
+        self.is_flip = False
+        self.is_jump = False
+        self.jump_timer = 0
         self.tilemap = tilemap
         self.image = self.cadres_idle[0]
 
     def can_move(self):
         pos = self.position
-        self.position = (pos[0] + self.speed[0], pos[1] + self.speed[1])
+        self.position = (pos[0] + self.speed[0], pos[1] + self.speed[1] - self.tilemap.tilesize // 4)
         for cord, tile in self.tilemap.tilemap.items():
             if self.is_collide(tile):
                 self.position = pos
@@ -39,6 +42,8 @@ class Player(AnimateEntity):
         return True
 
     def physics(self):
+        if self.is_jump:
+            return False
         pos = self.position
         self.position = (pos[0], pos[1] + self.tilemap.tilesize // 2)
         for cord, tile in self.tilemap.tilemap.items():
@@ -48,27 +53,39 @@ class Player(AnimateEntity):
         self.position = pos
         return True
 
+    def is_stand(self):
+        pos = self.position
+        self.position = (pos[0], pos[1] + self.tilemap.tilesize // 8)
+        for cord, tile in self.tilemap.tilemap.items():
+            if self.is_collide(tile):
+                self.position = pos
+                return True
+        self.position = pos
+        return False
+
     def move_horisontal(self):
         if self.can_move():
             self.tilemap.move((self.speed[0], 0))
 
     def blit(self):
+        if self.is_jump:
+            self._jump()
         if self.speed[0] != 0 and self.can_move():
 
-            if self.speed[0] < 0 and not self.flipped:
+            if self.speed[0] < 0 and not self.is_flip:
                 for cadre in range(len(self.cadres_run)):
                     self.cadres_run[cadre] = pg.transform.flip(self.cadres_run[cadre], True, False)
                 for cadre in range(len(self.cadres_idle)):
                     self.cadres_idle[cadre] = pg.transform.flip(self.cadres_idle[cadre], True, False)
 
-                self.flipped = True
-            elif self.speed[0] > 0 and self.flipped:
+                self.is_flip = True
+            elif self.speed[0] > 0 and self.is_flip:
                 for cadre in range(len(self.cadres_run)):
                     self.cadres_run[cadre] = pg.transform.flip(self.cadres_run[cadre], True, False)
                 for cadre in range(len(self.cadres_idle)):
                     self.cadres_idle[cadre] = pg.transform.flip(self.cadres_idle[cadre], True, False)
 
-                self.flipped = False
+                self.is_flip = False
             self.screen.blit(self.cadres_run[self.now_cadre_run // self.slow_run % len(self.cadres_run)], self.position)
             self.now_cadre_run += 1
             self.now_cadre_idle = 0
@@ -78,8 +95,30 @@ class Player(AnimateEntity):
                              self.position)
             self.now_cadre_idle += 1
             self.now_cadre_run = 0
-            
-        if self.speed[1] != 0:
-            self.tilemap.move((0, self.SPEED * 2))
+
+        if self.speed[1] > 0:
+            if not self.is_stand():
+                self.tilemap.move((0, self.SPEED))
+
+        elif self.speed[1] < 0:
+            self.tilemap.move((0, -self.SPEED))
         if self.physics():
             self.speed[1] = 10
+
+        '''print(self.speed[1])'''
+
+    def _jump(self):
+        self.jump_timer += 1
+        if self.jump_timer < self.FPS // 2:
+            self.speed[1] = -self.FPS / self.jump_timer
+        elif self.jump_timer < self.FPS:
+            if not self.is_stand():
+                self.speed[1] = self.FPS / self.jump_timer
+        else:
+            self.speed[1] = 0
+            self.is_jump = False
+
+    def start_jump(self):
+        if self.is_stand():
+            self.is_jump = True
+            self.jump_timer = 0

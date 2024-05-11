@@ -5,6 +5,7 @@ from game.scripts.tilemap.tile import Tile
 from game.scripts.utilities.json.load_json_tilemap import LoadJsonTilemap
 from game.scripts.images.entities.player import Player
 
+
 class TileMap:
     def __init__(self, path, tilesize, size, screen, fps):
         tilemap = LoadJsonTilemap("/pygameMain/game/data/maps/" + path)
@@ -25,11 +26,10 @@ class TileMap:
 
     def move(self, speed):
         for cord, tile in self.tilemap.items():
-            tile.position = (tile.position[0] - speed[0], tile.position[1] - speed[1])
 
+            tile.position = (tile.position[0] - speed[0], tile.position[1] - speed[1])
 
     def blit(self):
         for cord, tile in self.tilemap.items():
-            #if self.position[0] <= cord[0] < self.position[0] + self.size[0] and self.position[1] <= cord[1] \
-            #       < self.position[1] + self.size[1]:
+
             tile.blit()

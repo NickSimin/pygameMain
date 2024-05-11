@@ -51,6 +51,8 @@ class Game:
                 self.player.speed[0] = self.player.SPEED
             else:
                 self.player.speed[0] = 0
+            if keys[pg.K_SPACE]:
+                self.player.start_jump()
 
             self.clock.tick(self.fps)
 
