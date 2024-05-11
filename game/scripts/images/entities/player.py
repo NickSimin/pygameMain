@@ -3,6 +3,7 @@ import pygame as pg
 from game.scripts.images.entities.entities import AnimateEntity
 from game.scripts.utilities.load.load_image import load_images
 
+
 class Player(AnimateEntity):
     def __init__(self, position, screen, fps):
         self.position = position
