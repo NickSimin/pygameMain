@@ -118,6 +118,7 @@ class Player(AnimateEntity):
 
         '''print(self.speed[1])'''
 
+
     def _jump(self):
         self.jump_timer += 1
         if self.jump_timer < self.FPS // 2:
