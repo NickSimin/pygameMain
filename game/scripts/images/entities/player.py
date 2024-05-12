@@ -56,6 +56,7 @@ class Player(AnimateEntity):
         self.image = self.cadres_idle[0]
 
         self.sfx_jump = Sfx("jump")
+        self.sfx_dash = Sfx("dash")
 
     def can_move(self):
         pos = self.position
@@ -217,8 +218,13 @@ class Player(AnimateEntity):
             self.is_dash = False
             self.is_start_dash = False
             self.dash_speed = [1, 0]
+            self.sfx_dash.stop()
 
     def start_dash(self):
         if not self.is_dash and self.dash_idle_timer >= self.FPS:
             self.is_start_dash = True
             self.is_dash = True
+            self.dash_speed = [4, 0]
+            if self.can_dash():
+                self.sfx_dash.play()
+            self.dash_speed = [0, 0]
