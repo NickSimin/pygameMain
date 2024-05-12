@@ -26,7 +26,6 @@ class TileMap:
 
     def move(self, speed):
         for cord, tile in self.tilemap.items():
-
             tile.position = (tile.position[0] - speed[0], tile.position[1] - speed[1])
 
     def blit(self):

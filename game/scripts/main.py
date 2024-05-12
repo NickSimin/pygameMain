@@ -51,7 +51,9 @@ class Game:
                     self.is_run = False
 
             keys = pg.key.get_pressed()
-            if keys[pg.K_a]:
+            if keys[pg.K_f]:
+                self.player.start_dash()
+            elif keys[pg.K_a]:
                 self.player.speed[0] = -self.player.SPEED
             elif keys[pg.K_d]:
                 self.player.speed[0] = self.player.SPEED
