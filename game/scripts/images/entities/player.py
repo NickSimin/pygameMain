@@ -2,6 +2,7 @@ import pygame as pg
 
 from game.scripts.images.entities.entities import AnimateEntity
 from game.scripts.utilities.load.load_image import load_images
+from game.scripts.music.sfx import Sfx
 
 
 class Player(AnimateEntity):
@@ -41,6 +42,8 @@ class Player(AnimateEntity):
         self.tilemap = tilemap
         self.image = self.cadres_idle[0]
 
+        self.sfx_jump = Sfx("jump")
+
     def can_move(self):
         pos = self.position
         self.position = (pos[0] + self.speed[0], pos[1] + self.speed[1] - self.tilemap.tilesize // 4)
@@ -76,6 +79,7 @@ class Player(AnimateEntity):
     def move_horisontal(self):
         if self.can_move():
             self.tilemap.move((self.speed[0], 0))
+
     def flip(self):
         for cadre in range(len(self.cadres_run)):
             self.cadres_run[cadre] = pg.transform.flip(self.cadres_run[cadre], True, False)
@@ -85,10 +89,12 @@ class Player(AnimateEntity):
             self.cadres_jump[cadre] = pg.transform.flip(self.cadres_jump[cadre], True, False)
 
         self.is_flip = not self.is_flip
+
     def blit(self):
         if self.is_jump:
             self._jump()
         if self.speed[0] != 0 and self.can_move():
+
 
             if self.speed[0] < 0 and not self.is_flip:
                 self.flip()
@@ -118,10 +124,10 @@ class Player(AnimateEntity):
 
         '''print(self.speed[1])'''
 
-
     def _jump(self):
         self.jump_timer += 1
-        if self.jump_timer < self.FPS // 2:
+
+        if self.jump_timer < self.FPS // 3:
             if self.jump_timer < self.FPS // 4:
                 if self.speed[0] < 0 and not self.is_flip:
                     self.flip()
@@ -136,7 +142,7 @@ class Player(AnimateEntity):
                 self.is_start_jump = False
             self.speed[1] = -self.FPS / self.jump_timer
 
-        elif self.jump_timer < self.FPS:
+        elif self.jump_timer < self.FPS//3 * 2:
             self.is_start_jump = False
             if not self.is_stand():
                 self.speed[1] = self.FPS / self.jump_timer
@@ -145,8 +151,10 @@ class Player(AnimateEntity):
             self.speed[1] = 0
             self.is_jump = False
             self.is_start_jump = 0
+            self.sfx_jump.stop()
 
     def start_jump(self):
         if self.is_stand():
             self.is_jump = True
             self.jump_timer = 0
+            self.sfx_jump.play()

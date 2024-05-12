@@ -1,10 +1,11 @@
 import pygame as pg
 
-from game.scripts.images.image import Image
 from game.scripts.images.image import Background
 from game.scripts.images.button import Button
 from game.scripts.images.entities.player import Player
 from game.scripts.tilemap.tilemap import TileMap
+from game.scripts.music.music import Music
+from game.scripts.music.sfx import Sfx
 
 pg.init()
 
@@ -21,6 +22,11 @@ class Game:
 
         self.tilemap = TileMap("map1", 32, size_window, self.screen, self.fps)
         self.player = self.tilemap.player
+
+        self.main_music = Music("music")
+
+        self.main_music.play()
+
         pg.display.set_caption(caption)
 
     def menu(self):
@@ -62,7 +68,7 @@ class Game:
             pg.display.flip()
 
 
-game = Game((1024, 512), 60, "Game")
+game = Game((1024, 512), 60, "Lowborn")
 game.menu()
 game.run()
 
