@@ -6,6 +6,7 @@ from game.scripts.images.entities.player import Player
 from game.scripts.tilemap.tilemap import TileMap
 from game.scripts.music.music import Music
 from game.scripts.music.sfx import Sfx
+from game.scripts.text.dialog.dialog import Dialog
 
 pg.init()
 
@@ -29,6 +30,8 @@ class Game:
 
         pg.display.set_caption(caption)
 
+        self.test_dialog = Dialog("dialog_start", self.screen)
+
     def menu(self):
         while self.is_run and self.is_run_main_menu:
             for event in pg.event.get():
@@ -39,7 +42,7 @@ class Game:
             self.background.blit()
             self.main_menu_button.blit()
 
-            if self.main_menu_button.is_mouse_click():
+            if self.main_menu_button.is_mouse_click_button():
                 self.is_run_main_menu = False
 
             pg.display.flip()
@@ -67,6 +70,8 @@ class Game:
             self.background.blit()
             self.tilemap.blit()
             self.player.blit()
+            self.test_dialog.blit()
+
             pg.display.flip()
 
 

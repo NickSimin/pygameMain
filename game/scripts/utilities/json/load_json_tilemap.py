@@ -6,7 +6,6 @@ class LoadJsonTilemap:
     def __init__(self, path):
         self.path = path + ".json"
         self.data = self.load()
-        print(self.data)
 
     def load(self):
         with open(self.path) as file:
