@@ -60,7 +60,7 @@ class Player(AnimateEntity):
 
     def can_move(self):
         pos = self.position
-        self.position = (pos[0] + self.speed[0], pos[1] + self.speed[1] - self.tilemap.tilesize // 4)
+        self.position = (pos[0] + self.speed[0], pos[1] + self.speed[1] - self.tilemap.tilesize)
         for cord, tile in self.tilemap.tilemap.items():
             if self.is_collide(tile):
                 self.position = pos
@@ -85,7 +85,7 @@ class Player(AnimateEntity):
         if self.is_jump or self.is_dash:
             return False
         pos = self.position
-        self.position = (pos[0], pos[1] + self.tilemap.tilesize // 2)
+        self.position = (pos[0], pos[1] - self.tilemap.tilesize // 4 + 2)
         for cord, tile in self.tilemap.tilemap.items():
             if self.is_collide(tile):
                 self.position = pos
@@ -95,7 +95,7 @@ class Player(AnimateEntity):
 
     def is_stand(self):
         pos = self.position
-        self.position = (pos[0], pos[1] + self.tilemap.tilesize // 10)
+        self.position = (pos[0], pos[1] - self.tilemap.tilesize // 4 + 2)
         for cord, tile in self.tilemap.tilemap.items():
             if self.is_collide(tile):
                 self.position = pos
