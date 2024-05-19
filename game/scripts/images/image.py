@@ -32,7 +32,6 @@ class Image:
         return False
 
 
-
 class Background(Image):
     def __init__(self, path, screen, size):
         super().__init__(path, (0, 0), screen)

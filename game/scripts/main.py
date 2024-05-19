@@ -18,7 +18,7 @@ class Game:
         self.clock = pg.time.Clock()
         self.is_run = True
         self.is_run_main_menu = True
-        self.background = Background("background", self.screen, size_window)
+        self.background = Background("Background", self.screen, size_window)
         self.main_menu_button = Button((size_window[0] // 2, size_window[1] // 2), self.screen, "Play")
 
         self.tilemap = TileMap("map1", 32, size_window, self.screen, self.fps)

@@ -28,6 +28,11 @@ class LoadJsonDialog:
             return None
         return self.data[key]["text"]
 
+    def get_next(self, key):
+        if not self.can_get_text(key):
+            return None
+        return self.data[key]["next"]
+
     def can_get_text(self, key):
         if key in self.data:
             return True

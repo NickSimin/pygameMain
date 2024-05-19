@@ -9,9 +9,10 @@ from game.scripts.utilities.json.load_json_dialog import LoadJsonDialog
 class Dialog:
     def __init__(self, dialog, screen):
         self.texts = LoadJsonDialog(dialog)
-        self.idx = 0
-        self.start = self.texts.get_text("0")
-        self.text = Text(self.start, 20, (40, 350), (100, 100, 100), screen)
+        self.idx = "start"
+        self.now = self.texts.get_text(self.idx)
+        self.text = Text(self.now, 20, (40, 350), (100, 100, 100), screen)
+        self.set_dialog()
         self.image = Image("dialog/dialog", (0, 313), screen)
         self.next_button = Button((1000, 500), screen, "Next")
         self.next_button.set_scale(0.5)
@@ -30,10 +31,11 @@ class Dialog:
             self.set_dialog()
 
     def set_dialog(self):
-        now = self.texts.get_text(str(self.idx))
 
-        if now is not None:
-            self.text.set_text(now)
+        if self.idx != "end":
+            self.text.set_text(self.now)
         else:
             self.is_visible = False
-        self.idx += 1
+
+        self.idx = self.texts.get_next(self.idx)
+        self.now = self.texts.get_text(self.idx)
