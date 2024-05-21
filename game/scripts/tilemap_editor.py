@@ -25,7 +25,7 @@ class Editor:
 
         self.SPEED = 3
 
-        self.types = {"spawners": 1, "grass": 9, "stone": 9}
+        self.types = {"spawners": 2, "grass": 9, "stone": 9}
         self.keys_types = list(self.types.keys())
         self.now_key = 0
         self.now_variant = 0

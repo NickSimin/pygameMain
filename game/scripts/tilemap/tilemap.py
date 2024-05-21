@@ -4,10 +4,12 @@ import json
 from game.scripts.tilemap.tile import Tile
 from game.scripts.utilities.json.load_json_tilemap import LoadJsonTilemap
 from game.scripts.images.entities.player import Player
+from game.scripts.images.entities.exit import Exit
 
 
 class TileMap:
     def __init__(self, path, tilesize, size, screen, fps):
+        self.exit = None
         self.utilities_tilemap = LoadJsonTilemap("/pygameMain/game/data/maps/" + path)
         self.tilesize = tilesize
         self.position = [0, 0]
@@ -29,10 +31,14 @@ class TileMap:
             elif tile["variant"] == 0:
                 self.player = Player((position[0] - 12, position[1] - 12), self.screen, self.fps, self)
                 self.entities[position] = self.player
+            elif tile["variant"] == 1:
+                self.exit = Exit(position, self.screen, self)
+                self.entities[position] = self.exit
 
     def move(self, speed):
         for cord, tile in self.tilemap.items():
             tile.position = (tile.position[0] - speed[0], tile.position[1] - speed[1])
+        self.exit.position = (self.exit.position[0] - speed[0], self.exit.position[1] - speed[1])
 
     def _move(self, speed):
         self.position[0] -= speed[0]
@@ -45,14 +51,17 @@ class TileMap:
         # for cord, entity in self.entities.items():
         #     entity.editor_position = (entity.editor_position[0] - speed[0], entity.editor_position[1] - speed[1])
 
-    def blit(self):
+    def blit(self, is_editor=False):
         for cord, tile in self.tilemap.items():
             tile.blit(self.position)
+        if not is_editor:
+            self.exit.blit()
 
     def editor_blit(self):
-        self.blit()
+        self.blit(is_editor=True)
         for cord, entity in self.entities.items():
             entity.blit(self.position)
+
 
     def editor_save(self):
         self.utilities_tilemap.save()

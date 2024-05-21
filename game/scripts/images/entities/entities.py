@@ -3,7 +3,18 @@ from game.scripts.utilities.load.load_image import load_images
 
 
 class Entity(Image):
-    pass
+    def __init__(self, path, position, screen):
+        super().__init__(path, position, screen)
+        self.editor_position = position
+
+    def blit(self, cord=None):
+        if cord is None:
+            self.screen.blit(self.image, self.position)
+        else:
+            self.screen.blit(self.image, (self.position[0] + cord[0], self.position[1] + cord[1]))
+
+    def editor_blit(self):
+        self.screen.blit(self.image, self.editor_position)
 
 
 class AnimateEntity(Entity):
@@ -17,7 +28,7 @@ class AnimateEntity(Entity):
         self.now_cadre = 0
         self.image = self.cadres[0]
 
-    def blit(self, cord = None):
+    def blit(self, cord=None):
         if cord is None:
             self.screen.blit(self.cadres[self.now_cadre // self.slow], self.position)
 
