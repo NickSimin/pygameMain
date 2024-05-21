@@ -1,5 +1,6 @@
 import pygame as pg
 from game.scripts.images.image import Image
+from game.scripts.utilities.load.load_image import load_image
 
 
 class Tile(Image):
@@ -10,6 +11,15 @@ class Tile(Image):
         self.rect = self.image.get_rect()
         self.variant = variant
 
-    def blit(self):
-        self.screen.blit(self.image, self.position)
-        #pg.draw.rect(self.screen, (255, 0, 0), (self.position[0], self.position[1], self.tilesize, self.tilesize), 1)
+    def blit(self, cord = None):
+        if cord is None:
+            self.screen.blit(self.image, self.position)
+        else:
+            self.screen.blit(self.image, (self.position[0] + cord[0], self.position[1] + cord[1]))
+
+    def set_opacity(self, opacity):
+        self.image.set_alpha(opacity)
+
+    def set_image(self, path, variant):
+        self.image = load_image("tiles/" + path + "/" + str(variant))
+        self.image = pg.transform.scale(self.image, (self.tilesize, self.tilesize))

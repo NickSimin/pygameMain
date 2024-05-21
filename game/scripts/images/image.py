@@ -7,6 +7,7 @@ class Image:
         self.image = load_image(path)
         self.position = position
         self.screen = screen
+        self.size = self.image.get_size()
 
     def blit(self):
         self.screen.blit(self.image, self.position)
@@ -24,11 +25,28 @@ class Image:
         return False
 
     def is_collide(self, other):
-        if self.position[0] < other.position[0] + other.image.get_width():
-            if self.position[0] + self.image.get_width() > other.position[0]:
-                if self.position[1] < other.position[1] + other.image.get_height():
-                    if self.position[1] + self.image.get_height() > other.position[1]:
-                        return True
+        if self.is_collide_height(other) and self.is_collide_width(other):
+            return True
+        return False
+
+    def is_collide_height(self, other):
+        x1 = self.position[0]
+        x2 = other.position[0]
+        width1 = self.size[0]
+        width2 = other.size[0]
+
+        if x2 - width1 <= x1 <= x2 + width2:
+            return True
+        return False
+
+    def is_collide_width(self, other):
+        y1 = self.position[1]
+        y2 = other.position[1]
+        height1 = self.size[1]
+        height2 = other.size[1]
+
+        if y2 - height1 <= y1 <= y2 + height2:
+                return True
         return False
 
 

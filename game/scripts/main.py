@@ -12,7 +12,7 @@ pg.init()
 
 
 class Game:
-    def __init__(self, size_window, fps, caption):
+    def __init__(self, size_window, fps, caption, level):
         self.screen = pg.display.set_mode(size_window)
         self.fps = fps
         self.clock = pg.time.Clock()
@@ -21,7 +21,7 @@ class Game:
         self.background = Background("Background", self.screen, size_window)
         self.main_menu_button = Button((size_window[0] // 2, size_window[1] // 2), self.screen, "Play")
 
-        self.tilemap = TileMap("map1", 32, size_window, self.screen, self.fps)
+        self.tilemap = TileMap(level, 32, size_window, self.screen, self.fps)
         self.player = self.tilemap.player
 
         self.main_music = Music("music")
@@ -57,13 +57,16 @@ class Game:
             if keys[pg.K_f]:
                 self.player.start_dash()
             elif keys[pg.K_a]:
-                self.player.speed[0] = -self.player.SPEED
+                self.player.set_speed(False)
             elif keys[pg.K_d]:
-                self.player.speed[0] = self.player.SPEED
+                self.player.set_speed(True)
             else:
                 self.player.speed[0] = 0
             if keys[pg.K_SPACE]:
                 self.player.start_jump()
+
+            if self.player.fall_timer > self.fps * 2:
+                self.is_run = False
 
             self.clock.tick(self.fps)
 
@@ -75,7 +78,7 @@ class Game:
             pg.display.flip()
 
 
-game = Game((1024, 512), 60, "Lowborn")
+game = Game((1024, 512), 60, "Lowborn", "editor_map")
 game.menu()
 game.run()
 

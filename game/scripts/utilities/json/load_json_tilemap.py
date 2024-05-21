@@ -14,3 +14,16 @@ class LoadJsonTilemap:
 
     def items(self):
         return self.data.items()
+
+    def add_tile(self, position, type_tile, variant):
+        self.data[position] = {"type": type_tile, "variant": variant}
+
+    def remove_tile(self, position):
+        if position in self.data:
+            self.data.pop(position)
+        else:
+            print("error: tile not found")
+
+    def save(self):
+        with open(self.path, "w") as file:
+            json.dump(self.data, file)
