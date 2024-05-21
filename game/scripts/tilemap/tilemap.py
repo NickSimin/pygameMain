@@ -31,13 +31,17 @@ class TileMap:
                 self.entities[position] = self.player
 
     def move(self, speed):
+        for cord, tile in self.tilemap.items():
+            tile.position = (tile.position[0] - speed[0], tile.position[1] - speed[1])
+
+    def _move(self, speed):
         self.position[0] -= speed[0]
         self.position[1] -= speed[1]
         # for cord, tile in self.tilemap.items():
         #     tile.position = (tile.position[0] - speed[0], tile.position[1] - speed[1])
 
     def editor_move(self, speed):
-        self.move(speed)
+        self._move(speed)
         # for cord, entity in self.entities.items():
         #     entity.editor_position = (entity.editor_position[0] - speed[0], entity.editor_position[1] - speed[1])
 

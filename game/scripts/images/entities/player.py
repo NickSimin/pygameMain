@@ -108,7 +108,7 @@ class Player(AnimateEntity):
     def is_stand(self):
         pos = self.position
         if self.is_flip:
-            self.position = (pos[0], pos[1] - self.tilemap.tilesize//2)
+            self.position = (pos[0], pos[1])
         else:
             self.position = (pos[0], pos[1])
         for cord, tile in self.tilemap.tilemap.items():
