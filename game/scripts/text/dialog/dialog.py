@@ -17,7 +17,7 @@ class Dialog:
         self.next_button = Button((1000, 500), screen, "Next")
         self.next_button.set_scale(0.5)
 
-        self.is_visible = True
+        self.is_visible = False
 
     def blit(self):
         if self.is_visible:

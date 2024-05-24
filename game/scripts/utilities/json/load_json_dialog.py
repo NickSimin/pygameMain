@@ -7,7 +7,6 @@ class LoadJsonDialog:
 
         self.path = "game/data/dialogs/" + path + ".json"
         self.data = self.load()
-        print(self.data)
 
     def load(self):
         with open(self.path, encoding="utf-8") as file:

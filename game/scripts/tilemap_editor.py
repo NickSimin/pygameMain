@@ -21,11 +21,11 @@ class Editor:
         self.is_run = True
         self.is_run_main_menu = True
         self.background = Background("Background", self.screen, size_window)
-        self.tilemap = TileMap("editor_map", 32, size_window, self.screen, self.fps)
+        self.tilemap = TileMap("editor_map", 32, size_window, self.screen, self.fps, self)
 
         self.SPEED = 3
 
-        self.types = {"spawners": 2, "grass": 9, "stone": 9}
+        self.types = {"spawners": 3, "grass": 9, "stone": 9}
         self.keys_types = list(self.types.keys())
         self.now_key = 0
         self.now_variant = 0

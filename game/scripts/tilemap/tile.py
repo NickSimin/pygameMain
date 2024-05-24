@@ -6,10 +6,14 @@ from game.scripts.utilities.load.load_image import load_image
 class Tile(Image):
     def __init__(self, path, variant, position, screen, tilesize):
         super().__init__("tiles/" + path + "/" + str(variant), position, screen)
+        self.type_tile = path
         self.tilesize = tilesize
         self.image = pg.transform.scale(self.image, (self.tilesize, self.tilesize))
         self.rect = self.image.get_rect()
         self.variant = variant
+        self.is_collider = True
+        if path == "spawners":
+            self.is_collider = False
 
     def blit(self, cord = None):
         if cord is None:

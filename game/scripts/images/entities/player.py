@@ -70,11 +70,13 @@ class Player(AnimateEntity):
         self.image = self.cadres_idle[0]
         self.editor_position = position
 
+        self.player_type = True
+
     def can_move(self):
         pos = self.position
         self.position = (pos[0] + self.speed[0], pos[1] - self.tilemap.tilesize)
         for cord, tile in self.tilemap.tilemap.items():
-            if self.is_collide(tile):
+            if self.is_collide(tile) and tile.is_collider:
                 self.position = pos
                 return False
         self.position = pos
@@ -86,9 +88,8 @@ class Player(AnimateEntity):
         self.position = (pos[0] + self.dash_speed, pos[1] - self.tilemap.tilesize)
 
         for cord, tile in self.tilemap.tilemap.items():
-            if self.is_collide(tile):
+            if self.is_collide(tile) and tile.is_collider:
                 self.position = pos
-                print(cord)
                 return False
         self.position = pos
         return True
@@ -99,7 +100,7 @@ class Player(AnimateEntity):
         pos = self.position
         self.position = (pos[0], pos[1] - self.tilemap.tilesize // 2)
         for cord, tile in self.tilemap.tilemap.items():
-            if self.is_collide(tile):
+            if self.is_collide(tile) and tile.is_collider:
                 self.position = pos
                 return False
         self.position = pos
@@ -112,12 +113,12 @@ class Player(AnimateEntity):
         else:
             self.position = (pos[0], pos[1])
         for cord, tile in self.tilemap.tilemap.items():
-            if self.is_collide(tile):
+            if self.is_collide(tile) and tile.is_collider:
                 self.position = pos
                 return True
         self.position = (pos[0], pos[1])
         for cord, tile in self.tilemap.tilemap.items():
-            if self.is_collide(tile):
+            if self.is_collide(tile) and tile.is_collider:
                 self.position = pos
                 return True
         self.position = pos
@@ -166,7 +167,7 @@ class Player(AnimateEntity):
                     self.now_cadre_idle += 1
                 self.now_cadre_run = 0
 
-            if self.speed[1] > 0:
+            if self.speed[1] > 0 and not self.is_jump:
                 if not self.is_stand():
                     self.tilemap.move((0, self.SPEED))
                     if self.speed[0] < 0 and not self.is_flip:
@@ -189,7 +190,10 @@ class Player(AnimateEntity):
             # pg.draw.rect(self.screen, (255, 0, 0), (self.position[0], self.position[1], self.size[0], \
             #                                         self.size[1]), 1)
         else:
-            self.screen.blit(self.image, (self.position[0] + cord[0], self.position[1] + cord[1]))
+            pass
+            position = (self.position[0] + cord[0] // 2, self.position[1] + cord[1])
+
+            self.screen.blit(self.image, position)
 
     def _jump(self):
         self.jump_timer += 1

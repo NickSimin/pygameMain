@@ -1,5 +1,6 @@
 import pygame as pg
 import json
+from game.scripts.utilities.json.load_json_dialog import LoadJsonDialog
 
 
 class LoadJsonTilemap:

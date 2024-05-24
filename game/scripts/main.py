@@ -5,9 +5,10 @@ from game.scripts.images.button import Button
 from game.scripts.images.entities.player import Player
 from game.scripts.tilemap.tilemap import TileMap
 from game.scripts.music.music import Music
+
 from game.scripts.music.sfx import Sfx
 from game.scripts.text.dialog.dialog import Dialog
-
+from game.scripts.text.text import Text
 pg.init()
 
 
@@ -21,7 +22,7 @@ class Game:
         self.background = Background("Background", self.screen, size_window)
         self.main_menu_button = Button((size_window[0] // 2, size_window[1] // 2), self.screen, "Play")
 
-        self.tilemap = TileMap(level, 32, size_window, self.screen, self.fps)
+        self.tilemap = TileMap(level, 32, size_window, self.screen, self.fps, self)
         self.player = self.tilemap.player
 
         self.main_music = Music("music")
@@ -30,7 +31,8 @@ class Game:
 
         pg.display.set_caption(caption)
 
-        self.test_dialog = Dialog("dialog_start", self.screen)
+        self.end_text = Text("Вы умерли, от того, что осознали то, что Вы живете в поломаной симуляции", 24,\
+                             (size_window[0] // 4, size_window[1] // 2), (255, 255, 255), self.screen)
 
     def menu(self):
         while self.is_run and self.is_run_main_menu:
@@ -73,12 +75,22 @@ class Game:
             self.background.blit()
             self.tilemap.blit()
             self.player.blit()
-            self.test_dialog.blit()
 
             pg.display.flip()
 
+    def end(self):
+        while self.is_run:
+            for event in pg.event.get():
+                if event.type == pg.QUIT:
+                    self.is_run = False
+            self.clock.tick(self.fps)
 
-game = Game((1024, 512), 60, "Lowborn", "editor_map")
+            self.background.blit()
+            self.end_text.blit()
+
+            pg.display.flip()
+
+game = Game((1024, 512), 60, "Simulate", "0")
 game.menu()
 game.run()
 
