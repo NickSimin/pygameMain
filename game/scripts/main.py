@@ -31,7 +31,7 @@ class Game:
 
         pg.display.set_caption(caption)
 
-        self.end_text = Text("Вы умерли, от того, что осознали то, что Вы живете в поломаной симуляции", 24,\
+        self.end_text = Text("Поздравляем Вас, Вы вышли из симуляции.", 24,\
                              (size_window[0] // 4, size_window[1] // 2), (255, 255, 255), self.screen)
 
     def menu(self):
@@ -68,13 +68,14 @@ class Game:
                 self.player.start_jump()
 
             if self.player.fall_timer > self.fps * 2:
-                self.is_run = False
+                self.end()
 
             self.clock.tick(self.fps)
 
             self.background.blit()
             self.tilemap.blit()
             self.player.blit()
+            print(self.player.position)
 
             pg.display.flip()
 
@@ -89,6 +90,9 @@ class Game:
             self.end_text.blit()
 
             pg.display.flip()
+
+    def update_player(self):
+        self.player = self.tilemap.player
 
 game = Game((1024, 512), 60, "Simulate", "0")
 game.menu()

@@ -43,10 +43,10 @@
         "type": "spawners",
         "variant": 0
     },
-    "8;7": {
+    "8;8": {
         "type": "spawners",
         "variant": 1,
-        "next": "end"
+        "next": "3"
     },
     "dialog": "dialog_4"
 }

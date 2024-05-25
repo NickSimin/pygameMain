@@ -30,6 +30,7 @@ class TileMap:
         self.tilemap = {}
         self.entities = {}
         self.dialog = None
+        self.player = None
         for cord, tile in self.utilities_tilemap.items():
             if cord == "dialog":
 
@@ -48,20 +49,9 @@ class TileMap:
                 self.tilemap[position] = Tile(tile["type"], tile["variant"], position, self.screen, self.tilesize)
             elif tile["variant"] == 1:
                 if tile.get("next") is not None:
-                    self.exit = Exit(position, self.screen, tile["next"], self)
+                    self.exit = Exit(position, self.screen, tile["next"], self, self.player)
                 else:
-                    self.exit = Exit(position, self.screen, "0", self)
-                self.entities[position] = self.exit
-                self.tilemap[position] = Tile(tile["type"], tile["variant"], position, self.screen, self.tilesize)
-            elif tile["variant"] == 2:
-                if tile.get("dialog") is not None:
-                    dialog = Dialog(tile["dialog"], self.screen)
-                    table = Table(position, self.screen, dialog)
-
-                else:
-                    dialog = Dialog("dialog_start", self.screen)
-                    table = Table(position, self.screen, dialog)
-                self.entities[position] = table
+                    self.exit = Exit(position, self.screen, "0", self, self.player)
                 self.tilemap[position] = Tile(tile["type"], tile["variant"], position, self.screen, self.tilesize)
 
     def move(self, speed):
@@ -84,10 +74,14 @@ class TileMap:
 
     def blit(self, is_editor=False):
 
-        if self.exit is not None:
+        if self.exit is not None and not is_editor:
             self.exit.check(self.player)
+            pg.draw.rect(self.screen, (255, 0, 0), (self.exit.position[0], self.exit.position[1], \
+                                                    self.exit.size[0], self.exit.size[1]), 1)
+
+        print(self.player.position)
         for cord, tile in self.tilemap.items():
-            if tile.type_tile == "spawners" and not is_editor:
+            if (tile.type_tile == "spawners" or tile.type_tile == "exit") and not is_editor:
                 continue
 
             tile.blit(self.position)
@@ -95,13 +89,11 @@ class TileMap:
             # if self.exit is not None:
             #     self.exit.blit()
 
-        if not is_editor:
-            for cord, entity in self.entities.items():
-                if entity.player_type:
-                    continue
-                entity.blit()
+        if self.exit is not None:
+            self.exit.blit()
         if self.dialog is not None:
             self.dialog.blit()
+
 
     def editor_blit(self):
         self.blit(True)
@@ -122,6 +114,7 @@ class TileMap:
     def next(self, next_path):
         self.utilities_tilemap = LoadJsonTilemap("/pygameMain/game/data/maps/" + next_path)
         self.load()
+        self.play.update_player()
 
     def end(self):
         self.play.end()
