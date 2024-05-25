@@ -75,7 +75,6 @@ class Game:
             self.background.blit()
             self.tilemap.blit()
             self.player.blit()
-            print(self.player.position)
 
             pg.display.flip()
 
@@ -94,8 +93,3 @@ class Game:
     def update_player(self):
         self.player = self.tilemap.player
 
-game = Game((1024, 512), 60, "Simulate", "0")
-game.menu()
-game.run()
-
-pg.quit()

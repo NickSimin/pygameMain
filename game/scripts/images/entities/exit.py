@@ -15,7 +15,6 @@ class Exit(Entity):
             self.next()
 
     def next(self):
-        print("check2")
         if self.next_level != "end":
             self.tilemap.next(self.next_level)
         else:

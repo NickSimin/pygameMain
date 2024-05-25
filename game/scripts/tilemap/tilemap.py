@@ -76,10 +76,8 @@ class TileMap:
 
         if self.exit is not None and not is_editor:
             self.exit.check(self.player)
-            pg.draw.rect(self.screen, (255, 0, 0), (self.exit.position[0], self.exit.position[1], \
-                                                    self.exit.size[0], self.exit.size[1]), 1)
 
-        print(self.player.position)
+
         for cord, tile in self.tilemap.items():
             if (tile.type_tile == "spawners" or tile.type_tile == "exit") and not is_editor:
                 continue
